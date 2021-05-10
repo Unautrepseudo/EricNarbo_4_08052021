@@ -78,10 +78,11 @@ const validateCheckbox = () => {
   let formData = new FormData(form);
 
   if (!checkbox1.checked) {
-    checkError1.innerHTML = 'erreur';
+    checkError1.innerHTML =
+      'Vous devez vérifier que vous acceptez les termes et conditions';
     checkError1.style.color = 'red';
   } else {
-    checkError1.innerHTML = 'super';
+    checkError1.innerHTML = '';
     checkError1.style.color = 'green';
   }
 
@@ -89,12 +90,11 @@ const validateCheckbox = () => {
     checked = box.checked || checked === true ? true : false;
 
     if (!checked) {
-      multicheckError.innerHTML = 'erreur';
+      multicheckError.innerHTML = 'Vous devez choisir une option';
       multicheckError.style.color = 'red';
     } else {
-      multicheckError.innerHTML = 'super';
-      multicheckError.style.color = 'green';
       validatedData.EventPlace = box.value;
+      multicheckError.innerHTML = '';
     }
   });
   if (checkbox2.checked) {
@@ -118,13 +118,13 @@ const checkInputs = () => {
     {
       name: 'first',
       target: document.getElementById('first'),
-      message: 'Ce champs doit contenir au moins deux caractères',
+      message: 'Veuillez entrer 2 caractères ou plus',
       condition: prenomValue.length < 2,
     },
     {
       name: 'last',
       target: document.getElementById('last'),
-      message: 'Ce champs doit contenir au moins deux caractères',
+      message: 'Veuillez entrer 2 caractères ou plus',
       condition: nomValue.length < 2,
     },
     {
@@ -136,7 +136,7 @@ const checkInputs = () => {
     {
       name: 'birthdate',
       target: document.getElementById('birthdate'),
-      message: 'Date de naissance obligatoire',
+      message: 'Vous devez entrer votre date de naissance',
       condition: birthdateValue === '',
     },
     {
