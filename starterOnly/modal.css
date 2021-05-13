@@ -117,7 +117,8 @@ main {
   text-align: justify;
 }
 
-.modal-btn {
+.modal-btn,
+.close-modal-btn {
   font-size: 145%;
   background: #fe142f;
   display: flex;
@@ -129,7 +130,8 @@ main {
   cursor: pointer;
 }
 
-.modal-btn:hover {
+.modal-btn:hover,
+.close-modal-btn:hover {
   background: #3876ac;
 }
 
@@ -139,6 +141,38 @@ main {
   font-family: var(--font-slab);
 }
 
+/* Confirmation form modal */
+.confirmation-msg {
+  position: fixed;
+  z-index: 1;
+  width: 500px;
+  height: 95%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #232323;
+  color: white;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  word-break: break-word;
+}
+.confirmation-msg p {
+  font-size: 40px;
+  padding: 90px;
+  text-align: center;
+}
+.close-modal-btn-top {
+  font-size: 25px;
+  cursor: pointer;
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  color: white;
+  background: transparent;
+  border: none;
+}
 /* Modal form */
 
 small {

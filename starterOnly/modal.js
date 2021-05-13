@@ -26,12 +26,28 @@ closeModal.addEventListener('click', () => {
   modalbg.style.display = 'none';
 });
 
+// Validation confirmation modal
+const confirmationMsg = document.querySelector('.confirmation-msg');
+const confirmationMsgBtn = confirmationMsg.querySelectorAll('button');
+
+const showConfirmation = () => {
+  confirmationMsg.style.display = 'flex';
+  validationConfirmed();
+};
+
+const validationConfirmed = () => {
+  confirmationMsgBtn.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      confirmationMsg.style.display = 'none';
+    });
+  });
+};
+
 // VALIDATION RULES
 const form = document.getElementById('form');
 const formInputs = document.querySelectorAll('.text-control');
 const checkBoxInputs = document.querySelectorAll('.checkbox-input');
 const errorMessage = document.querySelectorAll('small');
-
 const prenom = document.getElementById('first');
 const nom = document.getElementById('last');
 const email = document.getElementById('email');
@@ -39,12 +55,10 @@ const birthdate = document.getElementById('birthdate');
 const quantity = document.getElementById('quantity');
 const checkbox1 = document.getElementById('checkbox1');
 const checkMailing = document.getElementById('checkbox2');
-
 const checkError1 = document.querySelector('.checkError1');
 const multiCheckbox = document.querySelectorAll('input[id^="location"]');
 const multicheckError = document.querySelector('.multicheck-error');
-
-const validatedData = {
+const validData = {
   first: null,
   last: null,
   email: null,
@@ -53,29 +67,30 @@ const validatedData = {
   EventPlace: null,
   mailing: false,
 };
+let validation = null;
 
 form.addEventListener('submit', (e) => {
+  validationCheckbox();
+  validationInputs((i = null));
+  isValidated();
   e.preventDefault();
-  let formData = new FormData(form);
 
-  checkInputs();
-  validateCheckbox();
-
-  validatedData.first = formData.get('first');
-  validatedData.last = formData.get('last');
-  validatedData.email = formData.get('email');
-  validatedData.birthdate = formData.get('birthdate');
-  validatedData.quantity = formData.get('quantity');
-  validatedData.prenom = formData.get('last');
-
-  console.log(validatedData);
-
-  //message de validation
+  if (validation) {
+    getData();
+    showConfirmation();
+    modalbg.style.display = 'none';
+    form.reset();
+  }
 });
 
-const validateCheckbox = () => {
+formInputs.forEach((input, i) => {
+  input.addEventListener('input', (e) => {
+    validationInputs(i);
+  });
+});
+
+const validationCheckbox = () => {
   let checked;
-  let formData = new FormData(form);
 
   if (!checkbox1.checked) {
     checkError1.innerHTML =
@@ -86,87 +101,111 @@ const validateCheckbox = () => {
     checkError1.style.color = 'green';
   }
 
-  multiCheckbox.forEach((box, i) => {
+  multiCheckbox.forEach((box) => {
     checked = box.checked || checked === true ? true : false;
 
     if (!checked) {
       multicheckError.innerHTML = 'Vous devez choisir une option';
       multicheckError.style.color = 'red';
     } else {
-      validatedData.EventPlace = box.value;
+      validData.EventPlace = box.value;
       multicheckError.innerHTML = '';
     }
   });
   if (checkbox2.checked) {
-    validatedData.mailing = true;
+    validData.mailing = true;
   } else {
-    validatedData.mailing = false;
+    validData.mailing = false;
   }
 };
 
-const checkInputs = () => {
-  const prenomValue = prenom.value.trim();
-  const nomValue = nom.value.trim();
-  const emailValue = email.value.trim();
-  const birthdateValue = birthdate.value.trim();
-  const quantityValue = quantity.value.trim();
-
+const validationInputs = (i) => {
   let emailRegExp = new RegExp('/^S+@S+.S+$/');
-  let testEmail = emailRegExp.test(emailValue);
-
   const objArray = [
     {
       name: 'first',
-      target: document.getElementById('first'),
+      target: prenom,
       message: 'Veuillez entrer 2 caractères ou plus',
-      condition: prenomValue.length < 2,
+      condition: prenom.value.trim().length < 2,
     },
     {
       name: 'last',
-      target: document.getElementById('last'),
+      target: nom,
       message: 'Veuillez entrer 2 caractères ou plus',
-      condition: nomValue.length < 2,
+      condition: nom.value.trim().length < 2,
     },
     {
       name: 'email',
-      target: document.getElementById('email'),
+      target: email,
       message: 'Veuillez entrer une adresse mail valide',
-      condition: emailValue === '' && !testEmail,
+      condition:
+        email.value.trim() === '' && !emailRegExp.test(email.value.trim()),
     },
     {
       name: 'birthdate',
-      target: document.getElementById('birthdate'),
+      target: birthdate,
       message: 'Vous devez entrer votre date de naissance',
-      condition: birthdateValue === '',
+      condition: birthdate.value === '',
     },
     {
       name: 'quantity',
-      target: document.getElementById('quantity'),
+      target: quantity,
       message: 'Veuillez entrer une adresse mail valide',
-      condition: isNaN(quantityValue) || quantityValue === '',
+      condition: isNaN(quantity.value.trim()) || quantity.value.trim() === '',
     },
   ];
 
-  objArray.forEach(({ target, message, condition, name }) => {
-    if (condition) {
-      showError(target, message);
+  if (i == null) {
+    objArray.forEach(({ condition, target, message }) => {
+      if (condition) {
+        showError(target, message);
+      } else {
+        success(target);
+      }
+    });
+  } else {
+    let obj = objArray[i];
+
+    if (obj.condition) {
+      showError(obj.target, obj.message);
     } else {
-      // let formData = new FormData(form);
-      // console.log(`${validatedData.name}.${name}`);
-      // console.log(toto.name);
-      success(target, 'bravo!');
-      // formData.get(`${name}`);
+      success(obj.target);
     }
-  });
+  }
 };
 
-const success = (input, message) => {
-  input.nextSibling.innerText = message;
-  input.nextSibling.style.color = 'green';
-  input.classList.add('border-success');
+const success = (input) => {
+  input.classList.remove('border-error');
+  input.nextSibling.innerText = '';
 };
 const showError = (input, message) => {
   input.nextSibling.innerText = message;
   input.nextSibling.style.color = 'red';
   input.classList.add('border-error');
+};
+const isValidated = () => {
+  let validator = [];
+
+  errorMessage.forEach((msg) => {
+    if (msg.innerText !== '') {
+      validator.push('error');
+    }
+  });
+
+  if (validator.length > 0) {
+    validation = false;
+  } else {
+    validation = true;
+  }
+};
+const getData = () => {
+  let formData = new FormData(form);
+  validData.first = formData.get('first');
+  validData.last = formData.get('last');
+  validData.email = formData.get('email');
+  validData.birthdate = formData.get('birthdate');
+  validData.quantity = formData.get('quantity');
+  validData.prenom = formData.get('last');
+
+  console.log(validData);
 };
