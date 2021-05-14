@@ -17,11 +17,13 @@
       <img alt="logo" src="Logo.png" width="auto" height="auto" />
     </div>
     <div class="main-navbar">
-      <a href="#" class="active"><span>Accueil</span></a>
-      <a href="#"><span>Détails de l'évènement</span></a>
-      <a href="#"><span>À propos</span></a>
-      <a href="#"><span>Contact</span></a>
-      <a href="#"><span>Évènements passés</span></a>
+      <div class="link-container">
+        <a href="#" class="active"><span>Accueil</span></a>
+        <a href="#"><span>Détails de l'évènement</span></a>
+        <a href="#"><span>À propos</span></a>
+        <a href="#"><span>Contact</span></a>
+        <a href="#"><span>Évènements passés</span></a>
+      </div>
       <a href="javascript:void(0);" class="icon" onclick="editNav()">
         <i class="fa fa-bars"></i>
       </a>
@@ -40,14 +42,14 @@
             aux réservations... Places limitées !
           </p>
           <button class="btn-signup modal-btn">
-            je m'inscris
+            Je m'inscris
           </button>
         </div>
         <div class="hero-img">
           <img src="./bg_img.jpg" alt="img" />
         </div>
         <button class="btn-signup modal-btn">
-          je m'inscris
+          Je m'inscris
         </button>
       </div>
 
@@ -57,7 +59,7 @@
           <div class="modal-body">
             <form
               name="reserve"
-              action="index.html"
+              action="/starterOnly/index.html"
               method="GET"
               id='form'
             >
@@ -89,6 +91,7 @@
                   type="email"
                   id="email"
                   name="email"
+                  required
                 /><small></small>
               </div>
               <div

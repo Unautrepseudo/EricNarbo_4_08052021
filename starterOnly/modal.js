@@ -1,49 +1,13 @@
-function editNav() {
-  let x = document.getElementById('myTopnav');
-  if (x.className === 'topnav') {
-    x.className += ' responsive';
-  } else {
-    x.className = 'topnav';
-  }
-}
+/*=====================
+      DOM Elements
+=====================*/
 
-// DOM Elements
 const modalbg = document.querySelector('.bground');
 const modalBtn = document.querySelectorAll('.modal-btn');
 const formData = document.querySelectorAll('.formData');
 const closeModal = document.querySelector('.close');
-
-// launch modal event
-modalBtn.forEach((btn) => btn.addEventListener('click', launchModal));
-
-// launch modal form
-function launchModal() {
-  modalbg.style.display = 'block';
-}
-
-// close modal form
-closeModal.addEventListener('click', () => {
-  modalbg.style.display = 'none';
-});
-
-// Validation confirmation modal
 const confirmationMsg = document.querySelector('.confirmation-msg');
 const confirmationMsgBtn = confirmationMsg.querySelectorAll('button');
-
-const showConfirmation = () => {
-  confirmationMsg.style.display = 'flex';
-  validationConfirmed();
-};
-
-const validationConfirmed = () => {
-  confirmationMsgBtn.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      confirmationMsg.style.display = 'none';
-    });
-  });
-};
-
-// VALIDATION RULES
 const form = document.getElementById('form');
 const formInputs = document.querySelectorAll('.text-control');
 const checkBoxInputs = document.querySelectorAll('.checkbox-input');
@@ -69,11 +33,52 @@ const validData = {
 };
 let validation = null;
 
+/*=====================
+      Utils
+=====================*/
+
+// launch burger menu
+function editNav() {
+  let x = document.getElementById('myTopnav');
+  if (x.className === 'topnav') {
+    x.className += ' responsive';
+  } else {
+    x.className = 'topnav';
+  }
+}
+
+// launch modal event
+modalBtn.forEach((btn) => btn.addEventListener('click', launchModal));
+
+// launch/close modal form
+function launchModal() {
+  modalbg.style.display = 'block';
+}
+closeModal.addEventListener('click', () => {
+  modalbg.style.display = 'none';
+});
+
+// Validation confirmation modal
+const showConfirmation = () => {
+  confirmationMsg.style.display = 'flex';
+  validationConfirmed();
+};
+
+const validationConfirmed = () => {
+  confirmationMsgBtn.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      confirmationMsg.style.display = 'none';
+    });
+  });
+};
+
+// Form validation rules
+
 form.addEventListener('submit', (e) => {
+  e.preventDefault();
   validationCheckbox();
   validationInputs((i = null));
   isValidated();
-  e.preventDefault();
 
   if (validation) {
     getData();
@@ -84,7 +89,7 @@ form.addEventListener('submit', (e) => {
 });
 
 formInputs.forEach((input, i) => {
-  input.addEventListener('input', (e) => {
+  input.addEventListener('input', () => {
     validationInputs(i);
   });
 });
@@ -123,32 +128,27 @@ const validationInputs = (i) => {
   let emailRegExp = new RegExp('/^S+@S+.S+$/');
   const objArray = [
     {
-      name: 'first',
       target: prenom,
       message: 'Veuillez entrer 2 caractères ou plus',
       condition: prenom.value.trim().length < 2,
     },
     {
-      name: 'last',
       target: nom,
       message: 'Veuillez entrer 2 caractères ou plus',
       condition: nom.value.trim().length < 2,
     },
     {
-      name: 'email',
       target: email,
       message: 'Veuillez entrer une adresse mail valide',
       condition:
         email.value.trim() === '' && !emailRegExp.test(email.value.trim()),
     },
     {
-      name: 'birthdate',
       target: birthdate,
       message: 'Vous devez entrer votre date de naissance',
       condition: birthdate.value === '',
     },
     {
-      name: 'quantity',
       target: quantity,
       message: 'Veuillez entrer une adresse mail valide',
       condition: isNaN(quantity.value.trim()) || quantity.value.trim() === '',
@@ -206,6 +206,5 @@ const getData = () => {
   validData.birthdate = formData.get('birthdate');
   validData.quantity = formData.get('quantity');
   validData.prenom = formData.get('last');
-
   console.log(validData);
 };
