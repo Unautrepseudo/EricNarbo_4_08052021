@@ -100,7 +100,7 @@ const validationCheckbox = () => {
 
   if (!checkbox1.checked) {
     checkError1.innerHTML =
-      'Vous devez vérifier que vous acceptez les termes et failConditions';
+      'Vous devez vérifier que vous acceptez les termes et conditions';
     checkError1.style.color = 'red';
   } else {
     checkError1.innerHTML = '';
