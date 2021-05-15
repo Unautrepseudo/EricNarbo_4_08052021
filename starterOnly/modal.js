@@ -96,10 +96,11 @@ formInputs.forEach((input, i) => {
 
 const validationCheckbox = () => {
   let checked;
+  let multicheckboxValue = [];
 
   if (!checkbox1.checked) {
     checkError1.innerHTML =
-      'Vous devez vérifier que vous acceptez les termes et conditions';
+      'Vous devez vérifier que vous acceptez les termes et failConditions';
     checkError1.style.color = 'red';
   } else {
     checkError1.innerHTML = '';
@@ -109,12 +110,14 @@ const validationCheckbox = () => {
   multiCheckbox.forEach((box) => {
     checked = box.checked || checked === true ? true : false;
 
-    if (!checked) {
+    if (checked) {
+      multicheckboxValue.push(box.value);
+      validData.EventPlace = multicheckboxValue[0];
+      multicheckError.innerHTML = '';
+    } else {
+      multicheckboxValue.length = 0;
       multicheckError.innerHTML = 'Vous devez choisir une option';
       multicheckError.style.color = 'red';
-    } else {
-      validData.EventPlace = box.value;
-      multicheckError.innerHTML = '';
     }
   });
   if (checkbox2.checked) {
@@ -125,39 +128,40 @@ const validationCheckbox = () => {
 };
 
 const validationInputs = (i) => {
-  let emailRegExp = new RegExp('/^S+@S+.S+$/');
+  let emailRegExp = /[^@]+@[^\.]+\..+/;
   const objArray = [
     {
       target: prenom,
       message: 'Veuillez entrer 2 caractères ou plus',
-      condition: prenom.value.trim().length < 2,
+      failCondition: prenom.value.trim().length < 2,
     },
     {
       target: nom,
       message: 'Veuillez entrer 2 caractères ou plus',
-      condition: nom.value.trim().length < 2,
+      failCondition: nom.value.trim().length < 2,
     },
     {
       target: email,
       message: 'Veuillez entrer une adresse mail valide',
-      condition:
-        email.value.trim() === '' && !emailRegExp.test(email.value.trim()),
+      failCondition:
+        email.value === '' || !emailRegExp.test(email.value.trim()),
     },
     {
       target: birthdate,
       message: 'Vous devez entrer votre date de naissance',
-      condition: birthdate.value === '',
+      failCondition: birthdate.value === '',
     },
     {
       target: quantity,
       message: 'Veuillez entrer une adresse mail valide',
-      condition: isNaN(quantity.value.trim()) || quantity.value.trim() === '',
+      failCondition:
+        isNaN(quantity.value.trim()) || quantity.value.trim() === '',
     },
   ];
 
   if (i == null) {
-    objArray.forEach(({ condition, target, message }) => {
-      if (condition) {
+    objArray.forEach(({ failCondition, target, message }) => {
+      if (failCondition) {
         showError(target, message);
       } else {
         success(target);
@@ -166,7 +170,7 @@ const validationInputs = (i) => {
   } else {
     let obj = objArray[i];
 
-    if (obj.condition) {
+    if (obj.failCondition) {
       showError(obj.target, obj.message);
     } else {
       success(obj.target);

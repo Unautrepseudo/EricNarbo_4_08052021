@@ -7,6 +7,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  outline: none;
 }
 /* Landing Page */
 
@@ -51,10 +52,12 @@ img {
   font-family: Roboto, sans-serif;
 }
 
-.topnav a:hover {
-  background-color: #ff0000;
-  color: #ffffff;
-  border-radius: 15px;
+@media (hover: hover) {
+  .topnav a:hover {
+    background-color: #ff0000;
+    color: #ffffff;
+    border-radius: 15px;
+  }
 }
 
 .topnav a:hover > span {
@@ -99,10 +102,9 @@ img {
     text-align: left;
   }
 
-  /* .topnav a:hover ~ .icon {
-    background-color: none;
-    color: red;
-  } */
+  .hero-headline {
+    font-size: 68px !important;
+  }
 
   .topnav a {
     color: red;
@@ -143,6 +145,12 @@ img {
     float: right;
     display: block;
     margin-top: 1px;
+  }
+
+  .topnav a:hover {
+    background-color: transparent;
+    color: red;
+    border-radius: 15px;
   }
 }
 
@@ -529,11 +537,10 @@ input[data-error]::after {
   width: 90vw;
 }
 .hero-text {
-  width: 146%;
+  width: 115%;
   font-weight: normal;
   margin-top: 57px;
   padding: 0;
-  text-align: center;
 }
 .btn-signup {
   outline: none;
@@ -546,7 +553,7 @@ input[data-error]::after {
 .hero-img {
   grid-column: span 8;
   display: flex;
-  max-height: 620px;
+  max-height: 642px;
 }
 .hero-img img {
   width: 100%;
@@ -572,6 +579,8 @@ footer {
   .hero-headline {
     text-align: center;
     width: auto;
+    font-size: 4.5rem;
+    white-space: normal;
   }
 
   .hero-section {
@@ -588,10 +597,6 @@ footer {
   }
   .hero-content .btn-signup {
     display: none;
-  }
-  .hero-headline {
-    font-size: 4.5rem;
-    white-space: normal;
   }
 
   .hero-text {
@@ -621,5 +626,36 @@ footer {
   }
   to {
     opacity: 1;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .hero-headline {
+    font-size: 36px !important;
+    transform: translateX(-55px);
+  }
+  .hero-text {
+    font-size: 1.2rem !important;
+    padding: 10px;
+    transform: translateX(-55px);
+    margin-top: 15px;
+  }
+  .hero-content {
+    padding: 0;
+    width: 375px !important;
+  }
+  .header-logo img {
+    width: 155px !important;
+  }
+  .topnav a {
+    color: red;
+    font-size: 22px;
+    margin-top: -8px !important;
+  }
+  .link-container {
+    transform: translateY(18px);
+  }
+  .content {
+    height: 144vh;
   }
 }
