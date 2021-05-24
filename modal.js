@@ -153,7 +153,7 @@ const validationInputs = (i) => {
     },
     {
       target: quantity,
-      message: 'Veuillez entrer une adresse mail valide',
+      message: 'Veuillez entrer une quantité valide',
       failCondition:
         isNaN(quantity.value.trim()) || quantity.value.trim() === '',
     },
